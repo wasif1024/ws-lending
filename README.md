@@ -58,6 +58,16 @@ Allows users to deposit SOL or USDC into the protocol. This instruction:
 - Updates the bank's total deposits
 - Uses share-based accounting where the first deposit sets the initial exchange rate
 
+#### `withdraw`
+Allows users to withdraw SOL or USDC from the protocol. This instruction:
+- Validates that the user has sufficient deposited balance
+- Calculates shares to withdraw based on the current exchange rate
+- Transfers tokens from the bank's treasury account back to the user's token account
+- Uses PDA signing for the treasury account transfer
+- Updates the user's deposit balances and shares
+- Updates the bank's total deposits and shares
+- Creates the user's token account if it doesn't exist (init_if_needed)
+
 ## Project Structure
 
 ```
@@ -66,13 +76,15 @@ ws_lending/
 │   └── ws_lending/
 │       └── src/
 │           ├── lib.rs              # Main program entry point
+│           ├── errors.rs           # Custom error definitions
 │           ├── states/
 │           │   ├── mod.rs
 │           │   └── states.rs       # Account state definitions (Bank, User)
 │           └── instructions/
 │               ├── mod.rs
 │               ├── admin.rs        # Admin instructions (initialize_bank, init_user)
-│               └── deposit.rs      # Deposit instruction
+│               ├── deposit.rs      # Deposit instruction
+│               └── withdraw.rs     # Withdraw instruction
 ├── tests/
 │   └── ws_lending.ts               # Test suite
 ├── Anchor.toml                     # Anchor configuration
