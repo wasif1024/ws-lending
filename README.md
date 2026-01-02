@@ -8,8 +8,10 @@ A decentralized lending protocol built on Solana using the Anchor framework. Thi
 
 ## Features
 
-- **Share-Based Accounting**: Uses a share-based system where deposits are converted to shares that appreciate in value as interest accrues
+- **Share-Based Accounting**: Uses a share-based system where deposits and borrows are converted to shares that track interest accrual
 - **Dual Asset Support**: Currently supports SOL and USDC with separate banks for each asset
+- **Oracle Integration**: Integrates with Pyth Network for real-time price feeds to calculate collateral values
+- **Collateral-Based Borrowing**: Users can borrow assets based on their deposited collateral with configurable LTV ratios
 - **Liquidation Mechanisms**: Includes liquidation thresholds, bonuses, and close factors for managing risk
 - **Program Derived Addresses (PDAs)**: Uses PDAs for deterministic account addresses and program-controlled accounts
 - **Anchor Framework**: Built with Anchor 0.30.1 for type-safe Solana program development
@@ -24,6 +26,8 @@ The `Bank` account stores the state for each supported asset (SOL and USDC):
 - `mint_address`: The token mint address this bank manages
 - `total_deposits`: Total amount of tokens deposited (increases with interest)
 - `total_deposits_share`: Total shares issued (stays constant, enables interest accrual)
+- `total_borrowed`: Total amount of tokens borrowed (increases with interest)
+- `total_borrowed_share`: Total borrow shares issued (stays constant, enables interest accrual)
 - `liquidation_threshold`: Loan-to-value ratio at which liquidation is triggered
 - `liquidation_bonus`: Percentage bonus for liquidators
 - `liquidation_close_factor`: Percentage of collateral that can be liquidated
@@ -72,6 +76,19 @@ Allows users to withdraw SOL or USDC from the protocol. This instruction:
 - Updates the bank's total deposits and shares
 - Creates the user's token account if it doesn't exist (init_if_needed)
 
+#### `borrow`
+Allows users to borrow SOL or USDC against their collateral. This instruction:
+- Retrieves real-time price feeds from Pyth Network oracle
+- Calculates total collateral value using accrued interest on deposits and current market prices
+- Validates that the borrow amount doesn't exceed the liquidation threshold
+- Calculates and assigns borrow shares based on the current exchange rate
+- Transfers tokens from the bank's treasury account to the user's token account
+- Uses PDA signing for the treasury account transfer
+- Updates the user's borrow balances and shares
+- Updates the bank's total borrowed and borrowed shares
+- Initializes the borrow pool if this is the first borrow (sets exchange rate to 1:1)
+- Creates the user's token account if it doesn't exist (init_if_needed)
+
 ## Project Structure
 
 ```
@@ -81,6 +98,7 @@ ws_lending/
 │       └── src/
 │           ├── lib.rs              # Main program entry point
 │           ├── errors.rs           # Custom error definitions
+│           ├── constants.rs        # Constants (Pyth feed IDs, max age)
 │           ├── states/
 │           │   ├── mod.rs
 │           │   └── states.rs       # Account state definitions (Bank, User)
@@ -88,7 +106,8 @@ ws_lending/
 │               ├── mod.rs
 │               ├── admin.rs        # Admin instructions (initialize_bank, init_user)
 │               ├── deposit.rs      # Deposit instruction
-│               └── withdraw.rs     # Withdraw instruction
+│               ├── withdraw.rs     # Withdraw instruction
+│               └── borrow.rs       # Borrow instruction
 ├── tests/
 │   └── ws_lending.ts               # Test suite
 ├── Anchor.toml                     # Anchor configuration
@@ -103,6 +122,11 @@ ws_lending/
 - [Anchor](https://www.anchor-lang.com/docs/installation) (v0.30.1)
 - [Yarn](https://yarnpkg.com/getting-started/install) (v3.1.1+)
 - Node.js (v16+)
+
+### Key Dependencies
+
+- **Anchor Lang/SPL**: Core framework for Solana program development
+- **Pyth Solana Receiver SDK**: Oracle integration for real-time price feeds
 
 ## Installation
 

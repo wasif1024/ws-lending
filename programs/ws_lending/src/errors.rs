@@ -4,4 +4,6 @@ use anchor_lang::prelude::*;
 pub enum ErrorCode {
     #[msg("Insufficient balance")]
     InsufficientBalance,
+    #[msg("Over borrowed limit")]
+    OverBorrowedLimit,
 }

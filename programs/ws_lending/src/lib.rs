@@ -4,9 +4,12 @@ pub mod states;
 use instructions::admin::*;
 use instructions::deposit::*;
 use instructions::withdraw::*;
+use instructions::borrow::*;
 use states::*;
 pub mod errors;
 use errors::*;
+pub mod constants;
+
 declare_id!("FDpT1vmBWwJvEf7RbDAy1STwUs4AUEXraB6wEnj5bVRd");
 
 #[program]
@@ -27,5 +30,8 @@ pub mod ws_lending {
     }
     pub fn withdraw(ctx: Context<Withdraw>, amount_to_withdraw: u64) -> Result<()> {
         process_withdraw(ctx, amount_to_withdraw)
+    }
+    pub fn borrow(ctx: Context<Borrow>, amount_to_borrow: u64) -> Result<()> {
+        process_borrow(ctx, amount_to_borrow)
     }
 }

@@ -22,6 +22,8 @@ pub struct Bank {
     pub mint_address: Pubkey,
     pub total_deposits: u64,
     pub total_deposits_share: u64,
+    pub total_borrowed: u64,
+    pub total_borrowed_share: u64,
     pub liquidation_threshold: u64, //The loan to value defined so that loan can be liquidated
     pub liquidation_bonus: u64, //Percentage of the bonus will be sent to liquidator for processing the liquidation
     pub liquidation_close_factor: u64, //Percentage of the collateral that can be liquidated
