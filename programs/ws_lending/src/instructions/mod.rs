@@ -1,2 +1,4 @@
 pub mod admin;
-use admin::*;
+pub use admin::*;
+pub mod deposit;
+pub use deposit::*;

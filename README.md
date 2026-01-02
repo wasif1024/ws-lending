@@ -1,5 +1,7 @@
 # WS Lending Protocol
 
+> A decentralized lending protocol on Solana built with Anchor. Supports SOL and USDC deposits and borrows using share-based accounting. 🚧 Work in Progress
+
 A decentralized lending protocol built on Solana using the Anchor framework. This protocol enables users to deposit SOL and USDC as collateral and borrow other assets, implementing a share-based accounting system similar to Compound/Aave.
 
 > ⚠️ **Work in Progress**: This project is currently under active development. Features may be incomplete and the codebase is subject to change.
