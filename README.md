@@ -28,6 +28,8 @@ The `Bank` account stores the state for each supported asset (SOL and USDC):
 - `liquidation_bonus`: Percentage bonus for liquidators
 - `liquidation_close_factor`: Percentage of collateral that can be liquidated
 - `max_ltv`: Maximum loan-to-value ratio for borrowing
+- `interest_rate`: Interest rate used for accruing interest on deposits (applied exponentially)
+- `last_updated`: Timestamp of last update
 
 #### User
 The `User` account tracks individual user positions:
@@ -60,7 +62,9 @@ Allows users to deposit SOL or USDC into the protocol. This instruction:
 
 #### `withdraw`
 Allows users to withdraw SOL or USDC from the protocol. This instruction:
-- Validates that the user has sufficient deposited balance
+- Accrues interest on deposits using exponential growth based on time elapsed and interest rate
+- Calculates the current value per share after interest accrual
+- Validates that the user has sufficient balance (including accrued interest)
 - Calculates shares to withdraw based on the current exchange rate
 - Transfers tokens from the bank's treasury account back to the user's token account
 - Uses PDA signing for the treasury account transfer
