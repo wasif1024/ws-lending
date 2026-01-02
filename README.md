@@ -1,5 +1,7 @@
 # WS Lending Protocol
 
+![WS Lending Protocol](assets/monarch_lending_variant_b.png)
+
 > A decentralized lending protocol on Solana built with Anchor. Supports SOL and USDC deposits and borrows using share-based accounting with real-time oracle price feeds and automated liquidation mechanisms.
 
 A production-ready decentralized lending protocol built on Solana using the Anchor framework. The protocol enables users to deposit SOL and USDC as collateral and borrow assets with real-time interest accrual. It implements a sophisticated share-based accounting system with automated liquidation capabilities, integrated with Pyth Network for secure price feeds.
