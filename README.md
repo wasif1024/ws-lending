@@ -89,6 +89,17 @@ Allows users to borrow SOL or USDC against their collateral. This instruction:
 - Initializes the borrow pool if this is the first borrow (sets exchange rate to 1:1)
 - Creates the user's token account if it doesn't exist (init_if_needed)
 
+#### `repay`
+Allows users to repay their borrowed SOL or USDC. This instruction:
+- Accrues interest on the total borrowed amount using exponential growth based on time elapsed and interest rate
+- Calculates the current value per share after interest accrual
+- Validates that the repay amount doesn't exceed the user's total debt (including accrued interest)
+- Transfers tokens from the user's token account back to the bank's treasury account
+- Calculates shares to remove based on the current exchange rate
+- Updates the user's borrow balances and shares (decreases them)
+- Updates the bank's total borrowed and borrowed shares (decreases them)
+- Uses share-based accounting to ensure accurate interest calculation
+
 ## Project Structure
 
 ```
@@ -107,7 +118,8 @@ ws_lending/
 │               ├── admin.rs        # Admin instructions (initialize_bank, init_user)
 │               ├── deposit.rs      # Deposit instruction
 │               ├── withdraw.rs     # Withdraw instruction
-│               └── borrow.rs       # Borrow instruction
+│               ├── borrow.rs       # Borrow instruction
+│               └── repay.rs        # Repay instruction
 ├── tests/
 │   └── ws_lending.ts               # Test suite
 ├── Anchor.toml                     # Anchor configuration

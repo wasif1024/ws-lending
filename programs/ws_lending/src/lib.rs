@@ -5,6 +5,8 @@ use instructions::admin::*;
 use instructions::deposit::*;
 use instructions::withdraw::*;
 use instructions::borrow::*;
+use instructions::repay::*;
+use instructions::liquidate::*;
 use states::*;
 pub mod errors;
 use errors::*;
@@ -33,5 +35,8 @@ pub mod ws_lending {
     }
     pub fn borrow(ctx: Context<Borrow>, amount_to_borrow: u64) -> Result<()> {
         process_borrow(ctx, amount_to_borrow)
+    }
+    pub fn repay(ctx: Context<Repay>, amount_to_repay: u64) -> Result<()> {
+        process_repay(ctx, amount_to_repay)
     }
 }

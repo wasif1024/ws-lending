@@ -83,6 +83,7 @@ pub fn process_borrow(ctx: Context<Borrow>,amount_to_borrow:u64) -> Result<()> {
         user.borrowed_sol_share=user.borrowed_sol_share.checked_add(user_shares).unwrap();
     }
    }
+   user.last_update_borrow=Clock::get()?.unix_timestamp;
    Ok(())
 }
 fn calculate_accrued_interest(deposited_value:u64,interest_rate:u64,last_updated:i64)->Result<(u64)>{

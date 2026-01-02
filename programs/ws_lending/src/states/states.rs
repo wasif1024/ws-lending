@@ -13,6 +13,7 @@ pub struct User {
     pub borrowed_usdc: u64,
     pub borrowed_usdc_share: u64,
     pub usdc_mint_address: Pubkey,
+    pub last_update_borrow: i64,
     pub last_updated: i64,
 }
 #[account]
