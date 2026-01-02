@@ -50,6 +50,14 @@ Initializes a new bank for SOL or USDC token mint. Creates:
 Initializes a user account for tracking deposits and borrows. Creates:
 - A PDA `User` account derived from the user's wallet address
 
+#### `deposit`
+Allows users to deposit SOL or USDC into the protocol. This instruction:
+- Transfers tokens from the user's token account to the bank's treasury account
+- Calculates and assigns shares based on the current exchange rate
+- Updates the user's deposit balances and shares
+- Updates the bank's total deposits
+- Uses share-based accounting where the first deposit sets the initial exchange rate
+
 ## Project Structure
 
 ```
@@ -63,7 +71,8 @@ ws_lending/
 │           │   └── states.rs       # Account state definitions (Bank, User)
 │           └── instructions/
 │               ├── mod.rs
-│               └── admin.rs        # Admin instructions (initialize_bank, init_user)
+│               ├── admin.rs        # Admin instructions (initialize_bank, init_user)
+│               └── deposit.rs      # Deposit instruction
 ├── tests/
 │   └── ws_lending.ts               # Test suite
 ├── Anchor.toml                     # Anchor configuration
