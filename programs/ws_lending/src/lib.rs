@@ -2,15 +2,13 @@ use anchor_lang::prelude::*;
 pub mod instructions;
 pub mod states;
 use instructions::admin::*;
-use instructions::deposit::*;
-use instructions::withdraw::*;
 use instructions::borrow::*;
-use instructions::repay::*;
+use instructions::deposit::*;
 use instructions::liquidate::*;
-use states::*;
-pub mod errors;
-use errors::*;
+use instructions::repay::*;
+use instructions::withdraw::*;
 pub mod constants;
+pub mod errors;
 
 declare_id!("FDpT1vmBWwJvEf7RbDAy1STwUs4AUEXraB6wEnj5bVRd");
 
@@ -38,5 +36,8 @@ pub mod ws_lending {
     }
     pub fn repay(ctx: Context<Repay>, amount_to_repay: u64) -> Result<()> {
         process_repay(ctx, amount_to_repay)
+    }
+    pub fn liquidate(ctx: Context<Liquidate>) -> Result<()> {
+        process_liquidate(ctx)
     }
 }

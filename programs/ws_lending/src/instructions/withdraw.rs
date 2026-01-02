@@ -37,12 +37,17 @@ pub fn process_withdraw(ctx: Context<Withdraw>, amount_to_withdraw: u64) -> Resu
     /*if amount_to_withdraw > deposited_value {
         return Err(ErrorCode::InsufficientBalance.into());
     }*/
-    let time_difference=user.last_updated.checked_sub(Clock::get()?.unix_timestamp).unwrap();
-    let bank=&mut ctx.accounts.bank;
-    bank.total_deposits=(bank.total_deposits as f64 * E.powf(bank.interest_rate as f32 * time_difference as f32) as f64).round() as u64;
+    let time_difference = user
+        .last_updated
+        .checked_sub(Clock::get()?.unix_timestamp)
+        .unwrap();
+    let bank = &mut ctx.accounts.bank;
+    bank.total_deposits = (bank.total_deposits as f64
+        * E.powf(bank.interest_rate as f32 * time_difference as f32) as f64)
+        .round() as u64;
 
-    let value_per_share=bank.total_deposits as f64/bank.total_deposits_share as f64;
-    let user_value=deposited_value as f64/value_per_share;
+    let value_per_share = bank.total_deposits as f64 / bank.total_deposits_share as f64;
+    let user_value = deposited_value as f64 / value_per_share;
     if amount_to_withdraw > user_value as u64 {
         return Err(ErrorCode::InsufficientBalance.into());
     }
