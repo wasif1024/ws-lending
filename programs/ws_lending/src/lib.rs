@@ -2,6 +2,7 @@ use anchor_lang::prelude::*;
 pub mod states;
 pub mod instructions;
 use instructions::admin::*;
+use instructions::deposit::*;
 use states::*;
 declare_id!("FDpT1vmBWwJvEf7RbDAy1STwUs4AUEXraB6wEnj5bVRd");
 
@@ -13,5 +14,8 @@ pub fn initialize_bank(ctx: Context<InitializeBank>,liquidation_threshold:u64,ma
 }
 pub fn init_user(ctx: Context<InitUser>,usdc_mint_address:Pubkey) -> Result<()> {
     process_init_user(ctx,usdc_mint_address)
+}
+pub fn deposit(ctx: Context<Deposit>,amount_to_deposit:u64) -> Result<()> {
+    process_deposit(ctx,amount_to_deposit)
 }
 }
